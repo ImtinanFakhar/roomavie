@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { articles, categories } from '../../data/content';
+---
+<Layout title="Home Decor Ideas & Inspiration | Roomavie" description="Explore all Roomavie home decor ideas: cozy living rooms, beautiful bedrooms, small spaces, renter-friendly styling, and simple seasonal inspiration.">
+  <section class="page-heading content-width"><span class="eyebrow">A little inspiration for everyday life</span><h1>Make yourself at home.</h1><p>Thoughtful ideas, beautiful spaces, and small changes that make a difference.</p></section>
+  <section class="collection content-width" aria-label="All home decor articles"><div class="collection-toolbar"><div class="filter-list" role="group" aria-label="Filter articles by room"><button class="filter-button active" data-filter="all" aria-pressed="true">All ideas</button>{categories.map((category) => <button class="filter-button" data-filter={category.slug} aria-pressed="false">{category.name}</button>)}</div><span id="collection-count" class="collection-count" role="status" aria-live="polite">{articles.length} ideas</span></div><div class="post-grid">{articles.map((article) => <div class="filter-card" data-category={article.category}><PostCard article={article} /></div>)}</div></section>
+</Layout>
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-button');
+  const cards = document.querySelectorAll<HTMLElement>('.filter-card');
+  const count = document.querySelector('#collection-count');
+  buttons.forEach((button) => button.addEventListener('click', () => {
+    buttons.forEach((item) => { item.classList.toggle('active', item === button); item.setAttribute('aria-pressed', String(item === button)); });
+    let visible = 0;
+    cards.forEach((card) => { const match = button.dataset.filter === 'all' || card.dataset.category === button.dataset.filter; card.hidden = !match; if (match) visible++; });
+    if (count) count.textContent = `${visible} ${visible === 1 ? 'idea' : 'ideas'}`;
+  }));
+</script>

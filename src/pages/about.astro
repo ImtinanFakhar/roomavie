@@ -1,0 +1,10 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { photo } from '../data/content';
+---
+<Layout title="About Roomavie | Home Decor for Real Life" description="Roomavie is a place for practical home decor ideas, comfortable spaces, and the small details that make everyday life a little more beautiful.">
+  <section class="about-page content-width"><div class="about-photo"><Image src={photo('living-room')} alt="A welcoming living room filled with warm natural light" widths={[480, 800]} sizes="(max-width: 720px) 100vw, 45vw" format="webp" loading="eager" /></div><div class="about-copy"><span class="eyebrow">Welcome to our little corner</span><h1>Beautiful homes.<br />Real, everyday life.</h1><p>We believe a home should feel as good as it looks. A place to put your feet up, gather your favorite people, and enjoy the little moments in between.</p><p>Roomavie brings together practical decorating ideas, cozy spaces, and thoughtful details for every stage of life. From making a small apartment work a little harder to finding the perfect soft layer for your bedroom, we’re here for the changes that make home feel more like you.</p><p>You don’t need a perfect room or an endless budget. Just a little inspiration, a few things you love, and the freedom to take your time.</p><a class="button" href="/blog/">Find your inspiration <Icon name="arrow" size={18} /></a></div></section>
+  <section class="values content-width"><div><span class="eyebrow">01 / Keep it practical</span><h2>Made for living.</h2><p>Useful ideas that fit the way you live, with room for the everyday things.</p></div><div><span class="eyebrow">02 / Find your feeling</span><h2>Comfort comes first.</h2><p>Soft textures, warm light, and spaces that invite you to settle in.</p></div><div><span class="eyebrow">03 / Make it yours</span><h2>A home, slowly collected.</h2><p>Celebrate what you already love, and add thoughtfully along the way.</p></div></section>
+</Layout>

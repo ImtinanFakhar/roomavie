@@ -1,0 +1,6 @@
+---
+import Brand from './Brand.astro';
+import Icon from './Icon.astro';
+import { categories } from '../data/content';
+---
+<footer class="site-footer"><div class="footer-main"><Brand small /><nav aria-label="Footer navigation"><a href="/">Home</a>{categories.map((c) => <a href={`/category/${c.slug}/`}>{c.name}</a>)}<a href="/about/">About</a></nav><div class="social-links"><a href="https://www.pinterest.com/search/pins/?q=neutral%20home%20decor" target="_blank" rel="noopener noreferrer" aria-label="Home inspiration on Pinterest"><Icon name="pinterest" size={18} /></a><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Instagram"><Icon name="instagram" size={18} /></a><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Facebook"><Icon name="facebook" size={17} /></a><a href="https://www.youtube.com/results?search_query=cozy+home+decor" target="_blank" rel="noopener noreferrer" aria-label="Home inspiration on YouTube"><Icon name="youtube" size={19} /></a></div></div><div class="footer-bottom"><p>© {new Date().getFullYear()} Roomavie. All rights reserved.</p><nav aria-label="Legal navigation"><a href="/privacy/">Privacy Policy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a></nav></div></footer>

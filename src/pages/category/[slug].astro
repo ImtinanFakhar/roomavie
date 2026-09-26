@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { categories, articles } from '../../data/content';
+export function getStaticPaths() { return categories.map((category) => ({ params: { slug: category.slug }, props: { category } })); }
+const { category } = Astro.props;
+const posts = articles.filter((article) => article.category === category.slug);
+---
+<Layout title={`${category.name} Ideas & Inspiration | Roomavie`} description={category.description} image={category.image}>
+  <section class="page-heading content-width"><a class="eyebrow breadcrumb" href="/blog/">All ideas <span>/</span> {category.name}</a><h1>{category.name}</h1><p>{category.description}</p></section>
+  <section class="collection content-width" aria-label={`${category.name} articles`}><nav class="category-navigation" aria-label="Browse categories">{categories.map((item) => <a href={`/category/${item.slug}/`} class:list={['filter-button', { active: item.slug === category.slug }]} aria-current={item.slug === category.slug ? 'page' : undefined}>{item.name}</a>)}</nav><div class="post-grid">{posts.map((article) => <PostCard article={article} />)}</div></section>
+</Layout>

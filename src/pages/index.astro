@@ -1,0 +1,17 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import PostCard from '../components/PostCard.astro';
+import { articles, featuredCategories, photo, articleUrl } from '../data/content';
+const popular = articles.slice(6);
+---
+<Layout>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy"><div class="hero-copy-inner"><span class="eyebrow">Welcome to Roomavie</span><h1 id="hero-title">Stylish Home <br />Decor Inspiration <br />for Real Life</h1><p>Practical ideas, cozy spaces and beautiful homes — for every space, every season and every stage of life.</p><a href="/blog/" class="button hero-button">Explore the Blog <Icon name="arrow" size={19} /></a></div><svg class="hero-leaves" viewBox="0 0 110 220" aria-hidden="true"><g fill="currentColor"><path d="M-10 208C2 153 18 99 46 34" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 144C-6 138-8 111 1 93c15 20 19 34 12 51ZM22 115C5 101 8 75 22 64c8 19 9 35 0 51ZM33 83C20 67 25 41 41 27c3 23 2 41-8 56ZM5 175c14-31 37-45 60-44-12 26-33 40-60 44ZM17 131c12-26 32-40 54-39-10 23-29 35-54 39ZM31 91c16-25 35-37 59-35-14 22-31 32-59 35ZM-2 195c20-2 34 6 44 21-19 2-35-5-44-21Z"/></g></svg></div>
+    <div class="hero-photo"><Image src={photo('hero')} alt="A welcoming cream living room with linen cushions, a wooden coffee table, olive branches, and a woven pendant light" widths={[560, 840, 1120]} sizes="(max-width: 720px) 100vw, 60vw" format="webp" quality={90} loading="eager" fetchpriority="high" decoding="async" /></div>
+  </section>
+  <section class="category-strip" aria-label="Explore home decor categories">{featuredCategories.map((category) => <a class="category-tile" href={`/category/${category.category}/`}><div class="category-image"><Image src={photo(category.image)} alt={category.alt} widths={[180, 280, 400]} sizes="(max-width: 560px) 43vw, (max-width: 900px) 30vw, 18vw" format="webp" quality={85} loading="lazy" /></div><span>{category.label}<Icon name="arrow" size={17} /></span></a>)}</section>
+  <section class="latest-section content-width" aria-labelledby="latest-title"><div class="section-heading"><h2 id="latest-title">Latest Posts</h2><a class="text-link" href="/blog/">View all posts <Icon name="arrow" size={19} /></a></div><div class="post-grid">{articles.slice(0, 6).map((article) => <PostCard article={article} />)}</div></section>
+  <section class="trending" aria-labelledby="trending-title"><div class="trending-inner"><div class="trending-heading"><span class="eyebrow">Trending now</span><h2 id="trending-title">Popular Ideas <br />Right Now</h2><a class="handwritten" href="/blog/">Reader<br /><span>Favorites <Icon name="arrow" size={20} /></span></a></div><div class="popular-grid">{popular.map((article) => <a href={articleUrl(article.slug)} class="popular-card"><div><Image src={photo(article.image)} alt={article.alt} widths={[160, 240, 320]} sizes="(max-width: 560px) 40vw, (max-width: 900px) 25vw, 15vw" format="webp" quality={85} loading="lazy" /></div><h3>{article.title}</h3></a>)}</div></div></section>
+</Layout>

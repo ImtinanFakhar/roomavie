@@ -1,0 +1,17 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import Icon from '../../components/Icon.astro';
+import { articles, photo, categoryName, type Article } from '../../data/content';
+export function getStaticPaths() { return articles.map((article) => ({ params: { slug: article.slug }, props: { article } })); }
+const { article } = Astro.props as { article: Article };
+const related = articles.filter((item) => item.category === article.category && item.slug !== article.slug).slice(0, 3);
+const readMinutes = Math.max(1, Math.ceil([article.intro, ...article.sections.map((s) => `${s.title} ${s.text}`)].join(' ').split(/\s+/).length / 200));
+const schemaImage = await getImage({ src: photo(article.image), format: 'jpg', quality: 90 });
+const schema = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: article.title, description: article.description, mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href, image: new URL(schemaImage.src, Astro.site).href, author: { '@type': 'Organization', name: 'Roomavie', url: Astro.site?.href }, publisher: { '@type': 'Organization', name: 'Roomavie', url: Astro.site?.href } };
+---
+<Layout title={`${article.title} | Roomavie`} description={article.description} image={article.image} article schema={schema}>
+  <article class="article-page content-width"><header class="article-header"><a class="eyebrow" href={`/category/${article.category}/`}>{categoryName(article.category)}</a><h1>{article.title}</h1><p class="article-deck">{article.description}</p><div class="article-byline"><span>By Roomavie</span><span class="byline-dot">·</span><span>{readMinutes} min read</span></div></header><Image class="article-cover" src={photo(article.image)} alt={article.alt} widths={[480, 800, 1200]} sizes="(max-width: 900px) 92vw, 1000px" format="webp" quality={90} loading="eager" fetchpriority="high" /><div class="article-layout"><aside class="article-toc"><span class="eyebrow">In this story</span><nav aria-label="Article contents">{article.sections.map((section, index) => <a href={`#idea-${index + 1}`}>{section.title}</a>)}</nav><a class="text-link" href="/blog/"><Icon name="arrow" size={17} class="back-arrow" /> All home ideas</a></aside><div class="article-content"><p class="article-intro">{article.intro}</p>{article.sections.map((section, index) => <section id={`idea-${index + 1}`}><h2>{section.title}</h2><p>{section.text}</p></section>)}<div class="article-takeaway"><span class="eyebrow">A little reminder</span><p>A beautiful home takes shape one thoughtful touch at a time. Start small, use what you love, and make room for real life.</p></div><a class="text-link" href="/blog/">Find your next idea <Icon name="arrow" size={18} /></a></div></div></article>
+  {related.length > 0 && <section class="related-section content-width"><div class="section-heading"><h2>A little more inspiration</h2><a class="text-link" href={`/category/${article.category}/`}>Explore {categoryName(article.category)} <Icon name="arrow" size={18} /></a></div><div class="post-grid">{related.map((item) => <PostCard article={item} />)}</div></section>}
+</Layout>

@@ -1,0 +1,20 @@
+---
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/cormorant-garamond/500-italic.css';
+import '@fontsource-variable/dm-sans';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { getImage } from 'astro:assets';
+import { photo } from '../data/content';
+interface Props { title?: string; description?: string; image?: string; article?: boolean; noindex?: boolean; schema?: Record<string, unknown> }
+const { title = 'Roomavie — Stylish Home Decor Inspiration for Real Life', description = 'Practical home decor ideas, cozy living rooms, small-space inspiration, and seasonal touches. Create a beautiful home for your everyday life with Roomavie.', image: imageName = 'hero', article = false, noindex = false, schema } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = await getImage({ src: photo(imageName), format: 'jpg', quality: 90 });
+const imageUrl = new URL(socialImage.src, Astro.site);
+const structuredData = schema || { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Roomavie', url: Astro.site?.href, description, inLanguage: 'en' };
+---
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="generator" content={Astro.generator} /><meta name="theme-color" content="#f8f6f2" /><title>{title}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} /><link rel="icon" href="/favicon.svg" type="image/svg+xml" /><meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} /><meta property="og:type" content={article ? 'article' : 'website'} /><meta property="og:site_name" content="Roomavie" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={imageUrl} /><meta property="og:image:alt" content="Warm, natural home decor inspiration from Roomavie" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={imageUrl} /><script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} /><slot name="head" /></head><body><Header /><main id="main-content"><slot /></main><Newsletter /><Footer /></body></html>

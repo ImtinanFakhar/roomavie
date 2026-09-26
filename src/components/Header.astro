@@ -1,0 +1,47 @@
+---
+import Brand from './Brand.astro';
+import Icon from './Icon.astro';
+import { categories, articles, articleUrl, categoryName } from '../data/content';
+const pathname = Astro.url.pathname;
+const links = [{ name: 'Home', href: '/' }, ...categories.map((c) => ({ name: c.name, href: `/category/${c.slug}/` })), { name: 'About', href: '/about/' }];
+const searchData = articles.map((a) => ({ title: a.title, category: categoryName(a.category), description: a.description, url: articleUrl(a.slug) }));
+---
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="announcement"><div class="announcement-inner"><span>Stylish homes. Happier days.</span><div class="top-links"><a href="/about/">About</a><a href="/contact/">Contact</a><a href="#newsletter">Subscribe</a><div class="social-links"><a href="https://www.pinterest.com/search/pins/?q=neutral%20home%20decor" target="_blank" rel="noopener noreferrer" aria-label="Home inspiration on Pinterest"><Icon name="pinterest" size={15} /></a><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Instagram"><Icon name="instagram" size={15} /></a><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Facebook"><Icon name="facebook" size={14} /></a><a href="https://www.youtube.com/results?search_query=cozy+home+decor" target="_blank" rel="noopener noreferrer" aria-label="Home inspiration on YouTube"><Icon name="youtube" size={16} /></a></div></div></div></div>
+<header class="site-header"><div class="header-inner"><Brand /><nav id="main-navigation" class="main-nav" aria-label="Main navigation">{links.map((link) => <a href={link.href} class:list={{ active: pathname === link.href }} aria-current={pathname === link.href ? 'page' : undefined}>{link.name}</a>)}</nav><div class="header-actions"><button class="icon-button search-trigger" aria-label="Search home decor ideas" aria-haspopup="dialog"><Icon name="search" size={23} /></button><button class="icon-button menu-trigger" aria-label="Open navigation" aria-controls="main-navigation" aria-expanded="false"><Icon name="menu" size={24} /></button></div></div></header>
+<dialog id="search-dialog" class="search-dialog" aria-labelledby="search-title"><div class="search-dialog-heading"><div><span class="eyebrow">A little inspiration</span><h2 id="search-title">Find your next home idea.</h2></div><button class="icon-button search-close" aria-label="Close search"><Icon name="close" /></button></div><label class="search-input-wrap"><Icon name="search" /><span class="sr-only">Search articles</span><input id="article-search" type="search" placeholder="Try “bedroom” or “small spaces”…" autocomplete="off" /></label><p class="search-status" role="status" aria-live="polite">Explore all our ideas below.</p><div class="search-results"></div></dialog>
+<script id="search-data" type="application/json" set:html={JSON.stringify(searchData).replace(/</g, '\\u003c')} />
+<noscript><style is:inline>.search-trigger,.menu-trigger{display:none!important}@media(max-width:900px){.header-inner{flex-wrap:wrap;padding-block:22px;gap:24px}.main-nav{display:flex;position:static;box-shadow:none;flex-basis:100%;padding:0;border:0;gap:15px 23px}}</style></noscript>
+<script>
+  const menu = document.querySelector<HTMLButtonElement>('.menu-trigger');
+  const nav = document.querySelector<HTMLElement>('#main-navigation');
+  menu?.addEventListener('click', () => {
+    const expanded = menu.getAttribute('aria-expanded') !== 'true';
+    menu.setAttribute('aria-expanded', String(expanded));
+    menu.setAttribute('aria-label', expanded ? 'Close navigation' : 'Open navigation');
+    nav?.classList.toggle('is-open', expanded);
+  });
+  const dialog = document.querySelector<HTMLDialogElement>('#search-dialog');
+  const input = document.querySelector<HTMLInputElement>('#article-search');
+  const results = document.querySelector<HTMLElement>('.search-results');
+  const status = document.querySelector<HTMLElement>('.search-status');
+  const data: { title: string; description: string; category: string; url: string }[] = JSON.parse(document.querySelector('#search-data')?.textContent || '[]');
+  function renderResults() {
+    if (!results || !status) return;
+    const query = (input?.value || '').trim().toLowerCase();
+    const matches = data.filter((item) => `${item.title} ${item.category} ${item.description}`.toLowerCase().includes(query));
+    results.replaceChildren();
+    for (const item of matches) {
+      const link = document.createElement('a');
+      link.href = item.url;
+      const category = document.createElement('span'); category.className = 'eyebrow'; category.textContent = item.category;
+      const title = document.createElement('h3'); title.textContent = item.title;
+      link.append(category, title); results.append(link);
+    }
+    status.textContent = matches.length ? `${matches.length} ${matches.length === 1 ? 'idea' : 'ideas'} to make yourself at home.` : 'No ideas found. Try “living room”, “fall”, or “cozy”.';
+  }
+  document.querySelector('.search-trigger')?.addEventListener('click', () => { dialog?.showModal(); renderResults(); input?.focus(); });
+  document.querySelector('.search-close')?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (event) => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } });
+  input?.addEventListener('input', renderResults);
+</script>

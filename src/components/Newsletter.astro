@@ -1,0 +1,18 @@
+---
+import { Image } from 'astro:assets';
+import { photo } from '../data/content';
+const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT;
+---
+{!endpoint && <noscript><style is:inline>.newsletter-form[data-connected="false"]{display:none}.newsletter-note{display:none}</style></noscript>}
+<section id="newsletter" class="newsletter" aria-labelledby="newsletter-title"><div class="newsletter-photo"><Image src={photo('newsletter')} alt="A ceramic vase of leafy branches with a stack of books on a wooden table" widths={[320, 480, 640]} sizes="(max-width: 720px) 100vw, 31vw" format="webp" loading="lazy" /></div><div class="newsletter-copy"><span class="eyebrow">Join the Roomavie community</span><h2 id="newsletter-title">Get Home Decor Ideas<br class="desktop-break" /> Straight to Your Inbox</h2><p>Fresh inspiration, popular posts and seasonal ideas —<br class="desktop-break" /> delivered with a little extra coziness.</p></div><div class="newsletter-form-wrap"><form class="newsletter-form" action={endpoint || undefined} method="post" data-connected={Boolean(endpoint)}><label class="sr-only" for="newsletter-email">Your email address</label><input id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="Your email address" required /><button type="submit" class="button">Subscribe</button></form><p class="newsletter-note" role="status" aria-live="polite">No spam, just beautiful inspiration.</p><svg class="newsletter-sprig" viewBox="0 0 130 70" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.1"><path d="M4 63C42 52 78 34 124 9M33 54C43 43 55 29 74 11M65 40c9-4 19-6 34-5"/><path d="M20 58c-4-13 1-23 10-27 0 12-3 20-10 27ZM33 53c-2-14 3-23 12-27 0 12-4 22-12 27ZM46 47c0-14 7-20 15-23-1 11-6 19-15 23ZM59 41c0-13 7-19 15-22-1 11-7 18-15 22ZM73 34c2-13 9-18 17-19-3 10-8 16-17 19ZM87 26c4-12 11-15 19-16-4 10-10 14-19 16ZM102 18c5-11 13-14 20-13-4 9-11 13-20 13ZM33 54c11-1 20 5 23 14-11-1-19-6-23-14ZM46 47c12-2 21 3 26 11-12 0-20-4-26-11ZM64 39c11-3 20 1 25 8-11 1-20-1-25-8ZM82 30c11-4 19-1 25 5-10 3-19 1-25-5Z"/></g></svg></div></section>
+<script>
+  const form = document.querySelector<HTMLFormElement>('.newsletter-form');
+  form?.addEventListener('submit', (event) => {
+    if (form.dataset.connected !== 'true') {
+      event.preventDefault();
+      const note = document.querySelector<HTMLElement>('.newsletter-note');
+      if (note) { note.textContent = 'Our newsletter is coming soon. Check back for a little inspiration!'; note.classList.add('newsletter-feedback'); }
+    }
+  });
+</script>
+{!endpoint && <noscript><p class="newsletter-noscript">Our newsletter is coming soon. Check back for a little inspiration!</p></noscript>}

@@ -1,0 +1,7 @@
+---
+const { small = false } = Astro.props;
+---
+<a href="/" class:list={['brand', { 'brand-small': small }]} aria-label="Roomavie home">
+  <span class="brand-name">Roomavie<svg viewBox="0 0 40 46" class="brand-sprig" aria-hidden="true"><path d="M7 44C12 27 22 13 31 3" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M14 31C1 29 1 18 12 23l2 8ZM20 21C6 18 10 9 18 14l2 7ZM25 13C16 9 20 1 25 6v7ZM17 28c0-12 14-12 12-6l-12 6ZM23 18c1-12 15-11 12-5l-12 5ZM30 7c0-7 7-8 7-6 0 4-4 6-7 6Z" fill="currentColor"/></svg></span>
+  <span class="brand-tagline">Home decor for real life</span>
+</a>

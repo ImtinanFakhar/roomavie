@@ -1,0 +1,7 @@
+---
+import { Image } from 'astro:assets';
+import { photo, categoryName, articleUrl, type Article } from '../data/content';
+interface Props { article: Article }
+const { article } = Astro.props;
+---
+<article class="post-card"><a href={articleUrl(article.slug)} class="post-image-link" tabindex="-1" aria-hidden="true"><Image src={photo(article.image)} alt={article.alt} widths={[320, 480, 640]} sizes="(max-width: 560px) calc(100vw - 40px), (max-width: 900px) 45vw, 30vw" format="webp" quality={85} loading="lazy" decoding="async" /></a><div class="post-body"><a href={`/category/${article.category}/`} class="eyebrow post-category">{categoryName(article.category)}</a><h3><a href={articleUrl(article.slug)}>{article.title}</a></h3><p>{article.description}</p></div></article>
