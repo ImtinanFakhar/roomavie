@@ -13,11 +13,11 @@ npm run dev
 
 `npm run build` runs TypeScript/Astro checks and creates the production site in `dist/`. `npm run preview` serves that build locally.
 
-`npm run verify` checks generated pages for metadata, valid structured data, working local links and image assets, accessible image dimensions/alt text, and sitemap output.
+`npm run verify` checks generated pages for metadata, valid structured data, working local links and image assets, accessible image dimensions/alt text, consistent www URLs, sitemap coverage, and explicit Pinterest crawler access.
 
 ## Configure before publishing
 
-Copy `.env.example` to `.env`. Set `SITE_URL` to the real production URL; it controls canonicals, social metadata, structured data, robots.txt, and the generated sitemap. Set `PUBLIC_CONTACT_EMAIL` to the monitored contact inbox.
+Copy `.env.example` to `.env` and set `PUBLIC_CONTACT_EMAIL` to the monitored contact inbox. The production identity is fixed to `https://www.roomavie.com/` in `astro.config.mjs`. Canonicals, social metadata, structured data, robots.txt, and sitemap URLs use this origin in local, production, and preview builds. `SITE_URL` and `CF_PAGES_URL` cannot override it; any old `SITE_URL` build variable can be removed.
 
 To enable actual newsletter subscriptions, set `PUBLIC_NEWSLETTER_ENDPOINT` to your form/newsletter provider's public POST endpoint. The form sends an `email` field using a standard HTML form submission. Without an endpoint, it honestly displays a coming-soon message and does not send or store addresses. Never put private provider API keys in public environment variables.
 
@@ -53,10 +53,22 @@ The site is entirely static. Images are optimized during the build, and the gene
 | Root directory | Leave empty (repository root) |
 | Node version | Latest Node 22, selected by `.node-version` |
 
-3. Add `SITE_URL` to the **build** environment variables if using a custom domain, for example `https://roomavie.com`. Add `PUBLIC_CONTACT_EMAIL` and optionally `PUBLIC_NEWSLETTER_ENDPOINT` as appropriate. Configure production and preview environments separately if you need different values.
+3. Add `PUBLIC_CONTACT_EMAIL` and optionally `PUBLIC_NEWSLETTER_ENDPOINT` to the **build** environment variables as appropriate. Add `www.roomavie.com` under the Pages project's **Custom domains**.
 4. Select **Save and Deploy**. Subsequent pushes to `main` trigger production builds through Cloudflare's Git integration.
 
-If `SITE_URL` is not configured, a Cloudflare build derives the stable project origin from `CF_PAGES_URL`; deployment hashes and branch names are removed so canonical URLs and the sitemap do not point at a temporary preview hostname. Local builds still default to `https://roomavie.com`.
+All deployments publish the production www canonical URLs, regardless of their Pages hostname or environment variables.
+
+### Domain redirect and Pinterest access
+
+At the Cloudflare zone level, create a **Redirect Rule** matching `http.host eq "roomavie.com"` with a dynamic destination of `concat("https://www.roomavie.com", http.request.uri.path)`, status **301**, and **Preserve query string** enabled. Keep the apex DNS record proxied so Cloudflare can apply the rule. Enable **Always Use HTTPS** for HTTP requests. Do not add a rule that redirects www back to the apex. Pages' `_redirects` file does not support domain-level redirects, so this setting lives in the Cloudflare dashboard rather than the repository.
+
+`robots.txt` explicitly allows both `Pinterestbot` and `Pinterest`, as well as other crawlers, without crawl delays. Pages and local image assets are public; HTML is generated at build time so crawlers do not need JavaScript to access content. Article pages include Open Graph article metadata and BlogPosting structured data with their title, description, author, and image. No `nopin` attributes or Pinterest Rich Pin opt-out tags are used.
+
+Check Cloudflare **Security Events** for requests from verified Pinterest crawlers if crawling fails. Authentication gates, WAF rules, or challenges configured in the Cloudflare account cannot be disabled by `robots.txt`; allow verified crawlers through any rule that blocks them. Do not trust a user-agent string alone or hard-code Pinterest IP ranges. A successful request with a Pinterest user-agent only checks that request, not Pinterest's actual network access.
+
+The repository can prevent technical crawling and metadata mistakes; Pinterest independently enforces its spam policies and controls domain reputation. Use direct www article URLs in Pins and keep each Pin's claims and imagery relevant to its destination.
+
+See [Pinterestbot documentation](https://help.pinterest.com/en/business/article/pinterestbot), [Rich Pin metadata](https://help.pinterest.com/en/business/article/rich-pins), [Pinterest community guidelines](https://policy.pinterest.com/en/community-guidelines), [Cloudflare domain redirect rules](https://developers.cloudflare.com/fundamentals/manage-domains/redirect-domain/), and [Pages redirect limitations](https://developers.cloudflare.com/pages/configuration/redirects/).
 
 `wrangler.jsonc` declares the Pages project name and output directory for Cloudflare tooling. The Cloudflare dashboard controls Git build settings and build environment variables; Wrangler runtime variables are not used for static build-time settings.
 
