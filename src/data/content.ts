@@ -36,6 +36,18 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    slug: 'small-bedroom-storage-ideas',
+    content: 'small-bedroom-storage-ideas',
+    title: '11 Small Bedroom Storage Ideas That Keep the Room Calm, Not Cramped',
+    category: 'small-spaces',
+    description: 'Discover 11 small bedroom storage ideas that hide more without crowding the room, including under-bed storage, tall dressers, closed cabinets and smarter bedside solutions.',
+    image: 'bedroom-storage-closed-storage-balance',
+    alt: 'Calm bedroom with a closed wardrobe, wooden dresser and a small amount of open decor',
+    intro: 'A small bedroom usually needs more storage. Good small-bedroom storage puts it where it uses the least valuable space, keeping the room visually calm and comfortable.',
+    tags: ['small bedroom', 'bedroom storage', 'small spaces', 'bedroom organization', 'hidden storage', 'small home ideas'],
+    sections: [],
+  },
+  {
     slug: 'small-living-room-furniture-ideas',
     content: 'small-living-room-furniture-ideas',
     title: 'Small Living Room Furniture Ideas That Create More Floor Space',
