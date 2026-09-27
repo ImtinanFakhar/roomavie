@@ -27,12 +27,13 @@ Header/footer social links currently open the corresponding platforms or home de
 
 - Articles, categories, and image mappings: `src/data/content.ts`
 - Full-length clutter guide: `src/content/posts/how-to-make-a-small-home-feel-less-cluttered.md`; page and metadata: `src/pages/small-spaces/how-to-make-a-small-home-feel-less-cluttered.astro`
+- Living room furniture guide: `src/content/posts/small-living-room-furniture-ideas.md`; page and metadata: `src/pages/small-spaces/small-living-room-furniture-ideas.astro`. Its 14 supplied photos are stored unchanged as `src/assets/images/furniture-01.png` through `furniture-14.png`; Astro generates optimized WebP versions during the build.
 - Home layout: `src/pages/index.astro`
 - Colors, typography, and responsive styles: `src/styles/global.css`
 - Shared metadata: `src/layouts/Layout.astro`
 - Newsletter: `src/components/Newsletter.astro`
 
-The site includes 12 article pages, 5 category pages, an article index with category filters, native-dialog search, mobile navigation, about/contact pages, and a custom 404 page. Core content/navigation remains available without JavaScript. No React runtime, remote fonts, analytics, or third-party client scripts are shipped.
+The site includes 13 article pages, 5 category pages, an article index with category filters, native-dialog search, mobile navigation, about/contact pages, and a custom 404 page. Core content/navigation remains available without JavaScript. No React runtime, remote fonts, analytics, or third-party client scripts are shipped.
 
 Local photos use Astro's image pipeline for WebP generation and responsive source sets. Images have explicit dimensions; below-the-fold photos are lazy loaded and the cover image receives high priority. The reference photo crops are intentionally retained to match the design; their resolution is limited by the supplied screenshot.
 

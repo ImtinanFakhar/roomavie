@@ -108,9 +108,16 @@ for (const [source, target, status] of redirects) {
   if (indexableCanonicals.has(`${productionOrigin}${source}`)) errors.push(`Redirect source must not also be a canonical page: ${source}`);
 }
 for (const [, target] of redirects) if (redirectSources.has(target)) errors.push(`Redirect chain: ${target}`);
+// Only articles published before category routing need legacy permalink redirects.
+const migratedArticleSlugs = new Set([
+  'how-to-make-a-small-home-feel-less-cluttered', 'small-living-room-ideas', 'renter-friendly-wall-decor',
+  'small-home-entryway-decor', 'cozy-bedroom-decor', 'black-accent-wall-ideas', 'simple-fall-apartment-decor',
+  'open-shelving-decor', 'apartment-decor-on-a-budget', 'cozy-corner-ideas', 'neutral-bedroom-ideas', 'fall-decor-inspiration',
+]);
 for (const canonical of articleCanonicals) {
   const target = new URL(canonical).pathname;
   const slug = target.split('/')[2];
+  if (!migratedArticleSlugs.has(slug)) continue;
   const source = slug === 'how-to-make-a-small-home-feel-less-cluttered' ? `/${slug}/` : `/blog/${slug}/`;
   if (!redirects.some(([from, to]) => from === source && to === target)) errors.push(`Missing permalink migration: ${source} -> ${target}`);
 }

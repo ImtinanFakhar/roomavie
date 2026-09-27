@@ -36,6 +36,18 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    slug: 'small-living-room-furniture-ideas',
+    content: 'small-living-room-furniture-ideas',
+    title: 'Small Living Room Furniture Ideas That Create More Floor Space',
+    category: 'small-spaces',
+    description: 'Discover small living room furniture ideas that create more floor space, including slim sofas, nesting tables, storage ottomans and lighter furniture choices for compact rooms.',
+    image: 'furniture-01',
+    alt: 'Small living room with a cream sofa, a round coffee table and warm wood flooring',
+    intro: 'A small living room does not always need smaller furniture. It needs furniture that uses its footprint well. In a compact living room, every piece should earn its footprint.',
+    tags: ['small living room', 'small spaces', 'living room furniture', 'space saving furniture', 'small home ideas', 'living room ideas'],
+    sections: [],
+  },
+  {
     slug: 'how-to-make-a-small-home-feel-less-cluttered',
     content: 'how-to-make-a-small-home-feel-less-cluttered',
     title: 'How to Make a Small Home Feel Less Cluttered Without Getting Rid of Everything',
