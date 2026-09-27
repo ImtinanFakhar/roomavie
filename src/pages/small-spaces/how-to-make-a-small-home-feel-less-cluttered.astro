@@ -1,0 +1,73 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import Icon from '../../components/Icon.astro';
+import { articles, photo, categoryName } from '../../data/content';
+import { Content, getHeadings, rawContent } from '../../content/posts/how-to-make-a-small-home-feel-less-cluttered.md';
+
+const article = articles.find((item) => item.slug === 'how-to-make-a-small-home-feel-less-cluttered')!;
+const related = articles.filter((item) => item.category === article.category && item.slug !== article.slug).slice(0, 3);
+const readMinutes = Math.ceil(rawContent().replace(/!\[[^\]]*\]\([^)]*\)/g, '').split(/\s+/).length / 200);
+const headings = getHeadings().filter((heading) => heading.depth === 2 && (/^\d+\./.test(heading.text) || ['A 15-Minute Visual-Clutter Reset', 'Which Strategy Should You Start With?', 'Final Thoughts'].includes(heading.text)));
+const published = '2026-09-27';
+const schemaImage = await getImage({ src: photo(article.image), format: 'jpg', quality: 90 });
+const schema = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting',
+  headline: article.title, description: article.description,
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
+  image: new URL(schemaImage.src, Astro.site).href,
+  author: { '@type': 'Organization', name: 'Roomavie', url: Astro.site?.href },
+  publisher: { '@type': 'Organization', name: 'Roomavie', url: Astro.site?.href },
+  datePublished: published, dateModified: published,
+  articleSection: categoryName(article.category), keywords: article.tags,
+  inLanguage: 'en',
+};
+---
+<Layout title="How to Make a Small Home Feel Less Cluttered" description={article.description} image={article.image} article schema={schema}>
+  <Fragment slot="head"><meta name="author" content="Roomavie" /><meta property="article:published_time" content={published} /><meta property="article:section" content={categoryName(article.category)} />{article.tags?.map((tag) => <meta property="article:tag" content={tag} />)}</Fragment>
+  <article class="article-page content-width">
+    <header class="article-header">
+      <a class="eyebrow" href={`/category/${article.category}/`}>{categoryName(article.category)}</a>
+      <h1>{article.title}</h1>
+      <p class="article-deck">{article.description}</p>
+      <div class="article-byline"><span>By Roomavie</span><span class="byline-dot">·</span><time datetime={published}>September 27, 2026</time><span class="byline-dot">·</span><span>{readMinutes} min read</span></div>
+    </header>
+    <Image class="article-cover" src={photo(article.image)} alt={article.alt} widths={[480, 800, 1200]} sizes="(max-width: 900px) 92vw, 1000px" format="webp" quality={90} loading="eager" fetchpriority="high" />
+    <details class="mobile-article-toc"><summary>In this story</summary><nav aria-label="Article contents">{headings.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}</nav></details>
+    <div class="article-layout">
+      <aside class="article-toc longform-toc"><span class="eyebrow">In this story</span><nav aria-label="Article contents">{headings.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}</nav><a class="text-link" href="/blog/"><Icon name="arrow" size={17} class="back-arrow" /> All home ideas</a></aside>
+      <div class="article-content longform-content">
+        <Content />
+        <div class="article-topics"><span class="eyebrow">Filed under</span><ul aria-label="Article topics">{article.tags?.map((tag) => <li>{tag}</li>)}</ul></div>
+        <a class="text-link" href="/category/small-spaces/">Explore more small-space ideas <Icon name="arrow" size={18} /></a>
+      </div>
+    </div>
+  </article>
+  <section class="related-section content-width"><div class="section-heading"><h2>A little more inspiration</h2><a class="text-link" href="/category/small-spaces/">Explore Small Spaces <Icon name="arrow" size={18} /></a></div><div class="post-grid">{related.map((item) => <PostCard article={item} />)}</div></section>
+</Layout>
+
+<style>
+  .longform-toc{max-height:calc(100vh - 56px);overflow-y:auto;padding-right:8px;scrollbar-width:thin}
+  .mobile-article-toc{display:none}
+  .longform-content :global(h2){margin-top:42px;scroll-margin-top:28px}
+  .longform-content :global(h3){font-size:26px;line-height:1.2;margin-block:25px 10px;scroll-margin-top:28px}
+  .longform-content :global(p){margin-bottom:16px}
+  .longform-content :global(ul),.longform-content :global(ol){color:var(--muted);font-size:16px;line-height:1.85;margin-block:12px 22px;padding-left:24px}
+  .longform-content :global(li){margin-block:5px}
+  .longform-content :global(strong){font-weight:600;color:var(--ink)}
+  .longform-content :global(img){margin-block:28px 36px;height:auto}
+  .article-topics{border-top:1px solid var(--line);margin-top:34px;padding-top:24px}
+  .article-topics ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+  .article-topics li{background:var(--cream);padding:5px 10px;font-size:11px;margin:0}
+  @media(max-width:900px){
+    .mobile-article-toc{display:block;max-width:690px;margin:24px auto 0;border-block:1px solid var(--line);padding-block:15px}
+    .mobile-article-toc summary{cursor:pointer;font-size:13px;color:var(--accent-dark)}
+    .mobile-article-toc nav{display:grid;gap:12px;padding-top:17px;font-size:13px;color:var(--muted)}
+  }
+  @media(max-width:720px){
+    .article-byline{flex-wrap:wrap;gap:8px;font-size:10px}
+    .longform-content :global(h3){font-size:25px}
+    .longform-content :global(ul),.longform-content :global(ol){font-size:15px;line-height:1.8}
+  }
+</style>

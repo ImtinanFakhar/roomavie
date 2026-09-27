@@ -23,6 +23,8 @@ export const featuredCategories = [
 
 export interface Article {
   slug: string;
+  content?: string;
+  tags?: string[];
   title: string;
   category: string;
   description: string;
@@ -33,6 +35,18 @@ export interface Article {
 }
 
 export const articles: Article[] = [
+  {
+    slug: 'how-to-make-a-small-home-feel-less-cluttered',
+    content: 'how-to-make-a-small-home-feel-less-cluttered',
+    title: 'How to Make a Small Home Feel Less Cluttered Without Getting Rid of Everything',
+    category: 'small-spaces',
+    description: 'Learn how to make a small home feel less cluttered without getting rid of everything using clearer surfaces, closed storage, better furniture placement and simple organization systems.',
+    image: 'visual-clutter-reset',
+    alt: 'A small living area with a mostly clear wooden console, a lamp, a small tray and a ceramic vase',
+    intro: 'A small home can feel cluttered even when it is clean. Clutter is not only about how many things you own. It is also about how many things your eyes have to process at once.',
+    tags: ['small home organization', 'visual clutter', 'small spaces', 'home organization', 'clutter solutions', 'small home ideas'],
+    sections: [],
+  },
   {
     slug: 'small-living-room-ideas', title: '12 Small Living Room Ideas That Feel Instantly Calmer', category: 'living-room',
     description: 'Simple, stylish ideas to create a more peaceful and inviting living room, no matter the size.', image: 'living-room', alt: 'Airy small living room with a linen sectional, greenery, and a round wooden coffee table',
@@ -165,4 +179,8 @@ export const articles: Article[] = [
 ];
 
 export const categoryName = (slug: string) => categories.find((category) => category.slug === slug)?.name || 'Decor Ideas';
-export const articleUrl = (slug: string) => `/blog/${slug}/`;
+export const articleUrl = (slug: string) => {
+  const article = articles.find((item) => item.slug === slug);
+  if (!article) throw new Error(`Unknown article: ${slug}`);
+  return `/${article.category}/${article.slug}/`;
+};

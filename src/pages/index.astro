@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import PostCard from '../components/PostCard.astro';
 import { articles, featuredCategories, photo, articleUrl } from '../data/content';
-const popular = articles.slice(6);
+const popular = articles.filter((article) => ['open-shelving-decor', 'apartment-decor-on-a-budget', 'cozy-corner-ideas', 'neutral-bedroom-ideas', 'fall-decor-inspiration'].includes(article.slug));
 ---
 <Layout>
   <section class="hero" aria-labelledby="hero-title">

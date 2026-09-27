@@ -12,6 +12,7 @@ const files = await walk(root);
 const pages = files.filter((file) => file.endsWith('.html'));
 const errors = [];
 const indexableCanonicals = new Set();
+const articleCanonicals = new Set();
 function checkProductionUrl(raw, label) {
   try {
     const url = new URL(raw);
@@ -33,6 +34,8 @@ let largestInlineScript = 0;
 for (const page of pages) {
   const html = await readFile(page, 'utf8');
   const label = path.relative(root, page);
+  const pinterestVerification = [...html.matchAll(/<meta\b[^>]*name="p:domain_verify"[^>]*content="([^"]+)"/g)];
+  if (pinterestVerification.length !== 1 || pinterestVerification[0]?.[1] !== 'f512a5cbd4f4d01edbc98279f315d9f3') errors.push(`${label}: missing or conflicting Pinterest domain verification tag`);
   const inlineScripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)].filter(([, attributes]) => !attributes.includes('application/') && !attributes.includes('src=')).map(([, , body]) => body).join('\n');
   largestInlineScript = Math.max(largestInlineScript, gzipSync(inlineScripts).length);
   if ((html.match(/<h1(?:\s|>)/g) || []).length !== 1) errors.push(`${label}: expected one h1`);
@@ -82,6 +85,10 @@ for (const page of pages) {
       if (!data['@context'] || !data['@type']) throw new Error('schema');
       checkSchemaUrls(data, `${label}: structured data`);
       if (data['@type'] === 'BlogPosting' && (!data.headline || !data.description || !data.author?.name || !data.image || data.mainEntityOfPage !== canonical)) errors.push(`${label}: incomplete article sharing metadata`);
+      if (data['@type'] === 'BlogPosting') {
+        articleCanonicals.add(canonical);
+        if (!/^\/(?:decor-ideas|small-spaces|living-room|bedroom|seasonal)\/[^/]+\/$/.test(new URL(canonical).pathname)) errors.push(`${label}: article URL must include its category and post slug`);
+      }
       if (data.image) {
         const image = new URL(data.image);
         if (image.pathname.startsWith('/_astro/')) await stat(path.join(root, image.pathname));
@@ -89,8 +96,23 @@ for (const page of pages) {
     } catch { errors.push(`${label}: invalid structured data or missing schema image`); }
   }
 }
-for (const required of ['robots.txt', 'sitemap-index.xml', 'sitemap-0.xml', '_headers', '404.html']) {
+for (const required of ['robots.txt', 'sitemap-index.xml', 'sitemap-0.xml', '_headers', '_redirects', '404.html']) {
   if (!files.includes(path.join(root, required))) errors.push(`Missing ${required}`);
+}
+const redirects = (await readFile(path.join(root, '_redirects'), 'utf8')).split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith('#')).map((line) => line.split(/\s+/));
+const redirectSources = new Set();
+for (const [source, target, status] of redirects) {
+  if (redirectSources.has(source)) errors.push(`Duplicate redirect: ${source}`);
+  redirectSources.add(source);
+  if (status !== '301' || !articleCanonicals.has(`${productionOrigin}${target}`)) errors.push(`Invalid article migration redirect: ${source} -> ${target} ${status}`);
+  if (indexableCanonicals.has(`${productionOrigin}${source}`)) errors.push(`Redirect source must not also be a canonical page: ${source}`);
+}
+for (const [, target] of redirects) if (redirectSources.has(target)) errors.push(`Redirect chain: ${target}`);
+for (const canonical of articleCanonicals) {
+  const target = new URL(canonical).pathname;
+  const slug = target.split('/')[2];
+  const source = slug === 'how-to-make-a-small-home-feel-less-cluttered' ? `/${slug}/` : `/blog/${slug}/`;
+  if (!redirects.some(([from, to]) => from === source && to === target)) errors.push(`Missing permalink migration: ${source} -> ${target}`);
 }
 const headers = await readFile(path.join(root, '_headers'), 'utf8');
 if (!headers.includes('/_astro/*') || !headers.includes('max-age=31536000, immutable')) errors.push('Missing immutable caching for fingerprinted assets');

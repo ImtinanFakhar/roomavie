@@ -1,0 +1,50 @@
+{
+  "method": "Built-in image_gen tool",
+  "article": "/small-spaces/how-to-make-a-small-home-feel-less-cluttered/",
+  "images": [
+    {
+      "file": "src/assets/images/visual-clutter-reset.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: Roomavie home organization article cover and editorial photograph\nPrimary request: Create a highly realistic compact home living area with a previously busy console or dresser now styled with only one lamp, one small tray and one decorative object, leaving most of the surface visibly empty. Show an ordinary small home with realistic furniture, warm natural light and no luxury architecture. No people, no text, vertical editorial photograph.\nScene: a lived-in small apartment, warm oak closed-storage console, soft cream walls and a glimpse of a modest linen sofa. The single decorative object can be a ceramic vase. Let the console's clear surface and open surrounding floor make the practical visual-clutter reset immediately legible.\nComposition: vertical portrait, natural eye-level camera, important furniture and objects around the middle of the frame so a landscape crop can also work as a blog cover. Real material textures and believable proportions.\nConstraints: no people, no text, no signage, no logos, no watermark, no collage, no before/after split; no extravagant architecture or excessive decorative objects."
+    },
+    {
+      "file": "src/assets/images/one-home-rule.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic compact entry area in a small home with one dedicated tray for keys, one hook for a daily bag and one closed shoe cabinet. Keep the rest of the entrance clear and simple, showing obvious homes for everyday items without excessive organizers. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography in natural light. Vertical portrait. No text, logos or watermark."
+    },
+    {
+      "file": "src/assets/images/closed-storage-shift.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic small living room showing a balanced mix of one closed media cabinet and one small open shelf containing only books, a plant and two decorative objects. Keep miscellaneous household items completely hidden and leave negative space around the furniture. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography in natural light. Vertical portrait. No text, logos or watermark."
+    },
+    {
+      "file": "src/assets/images/visual-noise-edit.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic compact open-shelf area in a small home using a restrained visual system: coordinated neutral baskets, similar book groupings and only a few decorative objects. Avoid excessive matching containers or artificial perfection. Show calm visual repetition and plenty of open shelf space. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography in natural light. Vertical portrait. No text, logos or watermark."
+    },
+    {
+      "file": "src/assets/images/one-basket-containment.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic small living room with one structured woven basket beside a compact sofa containing a neatly folded throw, remote pouch and one small household item category. Keep all contents below the rim and the surrounding floor clear. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography in natural light. Vertical portrait. No text, logos or watermark."
+    },
+    {
+      "file": "src/assets/images/furniture-breathing-room.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic compact living room with a small sofa, one side table and one armchair arranged with visible breathing room between each piece. Keep floor space open and avoid pushing multiple baskets, stools or decorative furniture into every corner. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography in natural light. Vertical portrait. No text, logos or watermark."
+    },
+    {
+      "file": "src/assets/images/same-finish-storage.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic small living room using three repeated finishes across non-matching furniture: warm natural wood, soft cream and matte black. Show a wood media cabinet, cream storage basket and black lighting details so the room feels coordinated without looking like a matching furniture set. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography in natural light. Vertical portrait. No text, logos or watermark."
+    },
+    {
+      "file": "src/assets/images/vertical-clutter-cleanup.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic compact home living room with one large framed artwork above the sofa and an adjacent wall left mostly empty. Avoid gallery-wall clutter, excessive floating shelves or decorative signs. Show a calm, intentional vertical composition. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography in natural light. Vertical portrait. No text, logos or watermark."
+    },
+    {
+      "file": "src/assets/images/daily-use-zone.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic small home storage cabinet divided by use frequency, with daily items at easy-to-reach middle shelves and occasional items stored neatly higher up. Keep cabinet doors open enough to show the system while the surrounding room remains uncluttered. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography in natural light. Vertical portrait. No text, logos or watermark."
+    },
+    {
+      "file": "src/assets/images/hidden-backstock.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic small-home closet or utility cabinet with one clearly contained backstock zone using a single large closed bin or one upper shelf for extra toiletries and household supplies. Keep daily-use products elsewhere and avoid warehouse-like quantities. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography in natural light. Vertical portrait. No text, logos or watermark."
+    },
+    {
+      "file": "src/assets/images/evening-reset.png",
+      "prompt": "Use case: photorealistic-natural\nAsset type: editorial article image for Roomavie's small home organization guide\nPrimary request: Create a highly realistic small open-plan home in the evening after a quick reset, showing a clear coffee table, neatly folded sofa throw, tidy dining surface and shoes contained near the entrance. Keep the space lived-in rather than sterile. No people, no text, vertical editorial photograph.\nStyle continuity: warm neutral small home, soft cream walls, natural wood, ordinary real furniture and believable lived-in details, authentic interior photography with warm evening light. Vertical portrait. No text, logos or watermark."
+    }
+  ]
+}

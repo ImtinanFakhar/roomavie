@@ -4,7 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import PostCard from '../../components/PostCard.astro';
 import Icon from '../../components/Icon.astro';
 import { articles, photo, categoryName, type Article } from '../../data/content';
-export function getStaticPaths() { return articles.map((article) => ({ params: { slug: article.slug }, props: { article } })); }
+export function getStaticPaths() { return articles.filter((article) => !article.content).map((article) => ({ params: { category: article.category, slug: article.slug }, props: { article } })); }
 const { article } = Astro.props as { article: Article };
 const related = articles.filter((item) => item.category === article.category && item.slug !== article.slug).slice(0, 3);
 const readMinutes = Math.max(1, Math.ceil([article.intro, ...article.sections.map((s) => `${s.title} ${s.text}`)].join(' ').split(/\s+/).length / 200));
