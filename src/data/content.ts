@@ -1,8 +1,10 @@
 import type { ImageMetadata } from 'astro';
 
-const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/images/*.png', { eager: true });
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/images/*.{png,jpg}', { eager: true });
 export function photo(name: string): ImageMetadata {
-  return photos[`../assets/images/${name}.png`].default;
+  const asset = photos[`../assets/images/${name}.png`] ?? photos[`../assets/images/${name}.jpg`];
+  if (!asset) throw new Error(`Missing article image: ${name}`);
+  return asset.default;
 }
 
 export const categories = [
@@ -35,6 +37,18 @@ export interface Article {
 }
 
 export const articles: Article[] = [
+  {
+    slug: 'christmas-tree-ideas-small-homes',
+    content: 'christmas-tree-ideas-small-homes',
+    title: '12 Christmas Tree Ideas for Small Homes That Feel Festive Without Taking Over the Room',
+    category: 'seasonal',
+    description: 'Discover 12 Christmas tree ideas for small homes, including slim trees, tabletop trees, half trees and smart placement ideas that feel festive without crowding the room.',
+    image: 'christmas-tree-12',
+    alt: 'Warmly lit Christmas tree with cream and brass ornaments beside a small living room seating area',
+    intro: 'A Christmas tree can transform a room faster than almost any other seasonal decoration. Find the placement, footprint and styling that make it festive without taking over your home.',
+    tags: ['christmas tree ideas for small homes', 'small christmas tree ideas', 'christmas tree ideas for small spaces', 'small living room christmas tree ideas', 'space saving christmas tree ideas', 'seasonal decor'],
+    sections: [],
+  },
   {
     slug: 'small-bedroom-storage-ideas',
     content: 'small-bedroom-storage-ideas',
